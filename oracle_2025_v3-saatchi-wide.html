@@ -1,0 +1,633 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <title>Oracle 2</title>
+
+    <style>
+
+      
+      
+            /* This contains the whole reels assembly */
+      /* for 1920 x 1080 we centre 460 left */
+      /* for 4k 4K (3,840 x 2,160) we centre 1920 and 1080 */
+      
+      
+      /* hold all magic numbers here so we can quickly change dimensions etc */
+      :root {
+        --doors-left: 1170px; /* 150 */
+        --doors-height: 1270px; /* 150 */
+        --doors-width: 1500px; /* 1000 */
+        --doors-top: 390px;
+        
+        /* individual */
+        --door-width: 300px; /* 1000 */
+        --door-margin: 300px; 
+        
+        --app-height: 2160px; /* 1080  */
+        --app-width: 3840px; /* was 1920 */
+        
+        --spinner-size: 620px; /* was 360 */
+        
+        --buttons-top: 470px;
+        --buttons-left: 3220px;
+      }
+      
+      
+      
+      
+/* 1. Use a more-intuitive box-sizing model */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+      
+/* 2. Remove default margin */
+* {
+  margin: 0;
+}
+
+      body {
+  /* 4. Add accessible line-height */
+  line-height: 1.5;
+  /* 5. Improve text rendering */
+  -webkit-font-smoothing: antialiased;
+}
+      
+
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif&display=swap');
+
+      /* this scaleds it but we're making 1080 x 1920 16x9 assume landscape for this one */
+.pointfour {
+  /* transform: scale(0.4); */
+  transform-origin: left top;
+}
+
+#app {
+  /* border: 1px solid red; */
+  /* new */
+  /* width: 100%; */
+  width: var(--app-width);
+  /* width: 1920; */
+  /* width cuts off the bottom because image not the right size - best to make image exactly right, right? */
+  
+  height: var(--app-height);
+
+  /* old */
+  /* background-image: url('https://dchip.wordpress.com/wp-content/uploads/2025/09/oracle-2-4724-square.jpeg'); */
+  
+  /* scaled to fit existing reels - MVP */
+
+  /* background-image: url('https://dchip.wordpress.com/wp-content/uploads/2025/11/oracle-2-1080x1920-landscape-closeup-96dpi-test-2-original-size.jpg'); */
+  
+  
+  /* blur version
+  background-image: url('https://dchip.wordpress.com/wp-content/uploads/2025/11/oracle-2-1080x1920-landscape-closeup-96dpi-test-2-original-size-blurred.png');
+  */
+  
+    /* saatchi
+   * wide
+   * https://dchip.wordpress.com/wp-content/uploads/2025/11/big-saatchi-4k-widescreen-crop.jpg
+   * 
+   * portrait
+   * https://dchip.wordpress.com/wp-content/uploads/2025/11/big-saatchi-portrait-crop-4k.jpg
+   * */
+  
+    background-image: url('https://dchip.wordpress.com/wp-content/uploads/2025/11/big-saatchi-4k-widescreen-crop.jpg');
+
+  
+    background-repeat: no-repeat;
+  background-color: #ffffff;
+  background-size: 100%;
+  /* background-image: url("https://dchip.wordpress.com/wp-content/uploads/2024/08/oracle-2-gui-graphic-with-reels-1730-centred-1730-1000-reels.jpg"); */
+  
+  /* display: flex; */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* position: relative; */
+}
+
+/* 490 down */
+/* 460 tall */
+
+
+      
+.doors {
+  
+  /* border: 1px solid blue; */
+  
+  width: var(--doors-width);
+  
+  /* was 460 try 230 */
+  height: var(--doors-height);
+  
+  position: absolute;
+  
+  /* was 310 high 230 means add 115 */
+  /* top: 425px; */
+  /* top: calc( calc(var(--app-height)/2) - calc(var(--doors-height)/2) );*/
+  top: var(--doors-top);
+  
+  left: var(--doors-left);
+  display: flex;
+  /* background-image: url("https://i0.wp.com/dchip.files.wordpress.com/2023/01/oracle-blanks-1024.jpg?ssl=1"); */
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+
+.door {
+  
+  /* border: 1px solid green; */
+  
+  width: var(--door-width); /* 200 */
+  /* height: 250px; */
+  
+  /* was 460 */
+  height: var(--doors-height);
+  
+  overflow: hidden;
+
+}
+
+#door_2 {
+   margin-right: var(--door-margin); /* 200px; */
+   margin-left: var(--door-margin); /* 200px; */
+}
+
+.boxes {
+  
+  /* border: 1px solid orange; */
+  
+  transition: transform 1s ease-in-out;
+}
+
+.box {
+  box-sizing:border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-family: 'PT Serif', serif;
+  color: #1e1e1e;
+
+  /* text-shadow: #000000 1px 0 10px; */
+  
+  font-weight: 500;
+  
+  /* white outline test */
+  /* text-shadow: #ffffff 1px 0 10px; */
+  
+  font-size: 30px; /* 22 */
+  line-height: 36px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.buttons {
+  
+  /* border: 1px solid teal; */
+  z-index: 999;
+  
+  margin: 0 0 0 0;
+  /* new */
+  position: absolute;
+  
+  
+  /* top:calc( calc(var(--app-height)/2) - calc(var(--spinner-size)/2)    ); 
+   * left:calc( calc(var(--app-width)/2) - calc(var(--spinner-size)/2)    ); 
+   * */
+  
+  
+
+  top: var(--buttons-top);
+  left: var(--buttons-left);
+  
+  /* calc centre - might not be best plasce */
+  /* left:calc( calc(var(--app-width)/2) - calc(var(--spinner-size)/2)    ); */
+  
+  
+  
+  opacity:1;
+}
+
+#spinner {
+  width:var(--spinner-size);
+  height: var(--spinner-size);
+  cursor: pointer;
+  position: relative;
+  left: 0px;
+  top: 0px;
+}
+
+.disabled {
+  visibility: hidden;
+  opacity: 0;
+  cursor:default;
+}
+
+/* pulse */
+.enabled {
+  
+  /* disable for now to better debug */
+  
+  animation-name: example;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+  
+}
+
+@keyframes example {
+  0%   {opacity:0;}
+  0%   {opacity:1;}
+  100% {opacity:0;}
+}
+  
+  
+
+
+</style>
+
+    
+    
+    
+    
+    
+    
+  </head>
+<body>
+
+
+
+
+<div id="app">
+  <div class="doors">
+    <div class="door" id="door_1">
+      <div class="boxes" id="boxes_1">
+      </div>
+    </div>
+    <div class="door"  id="door_2">
+      <div class="boxes" id="boxes_2">
+      </div>
+    </div>
+    <div class="door" id="door_3">
+      <div class="boxes" id="boxes_3">
+      </div>      
+    </div>
+  </div>
+  <div class="buttons">
+    <!-- <img id="spinner" class="disabled" onclick="spin()" src="https://dchip.wordpress.com/wp-content/uploads/2024/08/glow-ring-180.png" /> -->
+    <div id="touchme"></div>
+    <img id="spinner" class="disabled" src="https://dchip.wordpress.com/wp-content/uploads/2024/08/glow-ring-180.png" />
+  </div>
+</div>
+
+<script>
+
+
+/* init requires us to 
+create a random shuffled set of all 3 items
+create box containers for each value
+add them to their parent
+position them above one another
+move the parent upwards so only the first value is showing.
+
+spin requires us to
+motion blur the values
+move them downwards to come to a stop on the last value
+when it stops reshiffle the values in the boxes 
+
+i we don't include the currently displayed value in the hidden boxes
+we can't ever have same value picked again from a reel with no duplicates ie reel 1
+*/
+
+
+
+document.getElementById("app").classList.add('pointfour');
+  
+var items_1 = [
+    "AI ARMS RACE",
+  "AI ORGANISATIONAL RISKS",
+  "ROGUE AI",
+  "HUMAN EXPERIMENTATION OR INCOMPETENCE",
+  "COMBINATION OF RISK CATEGORIES",
+  "UNANTICIPATED EXISTENTIAL RISK (WILDCARD)",
+  "AI ARMS RACE",
+  "AI ORGANISATIONAL RISKS",
+  "ROGUE AI",
+  "HUMAN EXPERIMENTATION OR INCOMPETENCE",
+  "COMBINATION OF RISK CATEGORIES",
+  "UNANTICIPATED EXISTENTIAL RISK (WILDCARD)",
+"AI ARMS RACE",
+  "AI ORGANISATIONAL RISKS",
+  "ROGUE AI",
+  "HUMAN EXPERIMENTATION OR INCOMPETENCE",
+  "COMBINATION OF RISK CATEGORIES"
+]; //16 as 25
+
+var items_2 = ["LEGAL LIABILITY FOR AI DRIVEN DAMAGE",
+               "SAFETY REGULATIONS & CONTROLS",
+               "INTERNATIONAL CO-OPERATION (TREATIES)",
+               "PUBLIC OWNERSHIP & CONTROL",
+               "INTERNAL & EXTERNAL ANTITS",
+               "AI GOAL / VALUES ALIGNMENT",
+               "AI (OWN) API RESTRICTIONS",
+               "HARDWARE & FIRMWARE RESTRICTIONS",
+               "AI LICENCES","MODEL ACCESS CONTROLS",
+               "DEVELOPMENT MONITORING & REPORTING",
+               "NO AVAILABLE MITIGATION",
+               "UNPLANNED MITIGATION (WILDCARD)",
+              "LEGAL LIABILITY FOR AI DRIVEN DAMAGE",
+               "SAFETY REGULATIONS & CONTROLS",
+               "INTERNATIONAL CO-OPERATION (TREATIES)",
+               "PUBLIC OWNERSHIP & CONTROL",
+               "INTERNAL & EXTERNAL ANTITS",
+               "AI GOAL / VALUES ALIGNMENT"
+               ]; // 15 as 25
+
+var items_3 = ["HUMAN PROPAGANDA & DISINFORMATION",
+               "HUMAN SURVEILLANCE & LOSS OF PRIVACY",
+               "HUMAN CENSORSHIP",
+               "AUTHORITARIAN CONTROL (SINGLETON)",
+               "CYBER WARFARE",
+               "AUTONOMOUS WEAPONS",
+               "HUMAN UNEMPLOYMENT",
+               "HUMAN CONTROL OR ENSLAVEMENT",
+               "GLOBAL FINANCIAL CRISIS",
+               "FOOD SHORTAGES",
+               "INFRASTRUCTURE MELTDOWN",
+               "ACCELERATED ENVIRONMENTAL CRISIS",
+               "AI GOAL / VALUES DRIFT",
+               "POWER SEEKING AI",
+               "AI DECEPTION",
+               "GEOPOLITICAL CRISIS",
+               "SOCIAL UNREST & INSTABILITY",
+               "LOSS OF AI CONTROL (WILDCARD)",
+               "COMBINATION OF EXISTENTIAL IMPACTS",
+               "POSITIVE HUMAN FUTURES",
+               "HUMAN EXTINCTION",
+               "OVER-DEPENDENCE & RELIANCE",
+               "UNANTICIPATED EXISTENTIAL IMPACT (WILDCARD)"]; // 25
+
+function init(firstTime){
+  
+  console.log('init, firstTime is ');
+  console.log(firstTime);
+  
+  // assign spin function to the button
+  
+  /* try doing it this way again */
+  document.getElementById('spinner').addEventListener('click', spin);
+  
+
+
+var doors = document.querySelectorAll('.door');
+console.log('all the doors');
+console.log(doors);
+
+var testing = app.querySelectorAll('.door');
+console.log('testing');
+console.log(testing);
+  
+var values = [items_1, items_2, items_3];
+  
+  /*
+  // not now we autospin
+  if(firstTime){
+    var playButton = document.getElementById("spinner");
+  playButton.disabled = false;
+  playButton.classList.remove('disabled');
+  }
+  */
+  
+  // once for each door
+    for(let x=0; x<doors.length; x++){
+      var door = doors[x];
+      
+      // find the boxes element, which holds n number of box divs
+      var boxes = door.querySelector('.boxes');
+      
+      // make a working copy of this parent, do not include children?
+      var boxesClone = boxes.cloneNode(true);
+      console.log('i cloned the boxes container as');
+      console.log(boxesClone);
+      
+      // this door needs a shuffled array of items, which I put in an array called values
+      var arr = [];
+      arr = shuffleNew(values[x]);
+      console.log('this door has shuffled items:');
+      console.log(arr)
+      
+      // temporary holder for reel values - pool
+      var pool = [];
+      
+      // copy over my shuffled reel item values to pool
+      for(var p = 0; p < arr.length; p++){
+        pool[p] = arr[p];
+      }
+      console.log('pool is a copy of arr shuffled items, right?');
+      console.log(pool);
+      
+      // animating
+boxesClone.addEventListener('transitionstart',
+          function () {
+             var allBoxes = this.querySelectorAll('.box');
+              for(var q=0; q<allBoxes.length; q++){
+               allBoxes[q].style.filter = 'blur(0.15px)';
+              }
+          },
+          { once: true }
+        );
+      
+      
+      // when the boxes parent copy animation stops, remove the motion blur
+      boxesClone.addEventListener(
+          'transitionend',
+          function () {
+            
+            var allBoxes = this.querySelectorAll('.box');
+            console.log('allBoxes');
+            console.log(allBoxes);
+              for(var q=0; q<allBoxes.length; q++){
+               allBoxes[q].style.filter = 'blur(0px)'; //remove the motion blur
+                console.log('this is');
+                console.log(this);
+                if(q > 0){
+                  this.removeChild(allBoxes[q]);
+                }
+                
+                //if (q > 0) this.removeChild(box); // remove all except the shown winning box
+              }
+          },
+          { once: true }
+        );
+      
+      
+      // make the individual boxes one for each item in the pool
+      for (let i = pool.length - 1; i >= 0; i--) {
+        var box = document.createElement('div');
+        box.classList.add('box');
+        box.style.width = door.clientWidth + 'px';
+        box.style.height = door.clientHeight + 'px';
+        box.textContent = pool[i];
+        boxesClone.appendChild(box);
+      }
+      
+      // copied parent reels spin take 'duration' seconds to come to a stop - hard code 2 seconds
+      
+      // 2 seconds to spin, extra time for each reel
+      var spinTime = 2 + (0.4 * x);
+      
+      boxesClone.style.transitionDuration = spinTime+'s'; //`${duration}s`;
+      
+      // the boxes copy should move vertically by item height (taken from door height above) 
+      // one item less, so we stop on last one visible
+      
+      if(firstTime){
+        
+        console.log('this is the firstTime so move boxes to * -1 ');
+        console.log(door.clientHeight * (pool.length - 1) );
+        
+        // first run we need to show the first element
+        boxesClone.style.transform = `translateY(-${door.clientHeight * (pool.length - 1)}px)`;
+      
+      } else {
+        
+        console.log('this is not the first time');
+        // second time so we already stopped on a value so move the new ones up out of view
+        //boxesClone.style.transform = `translateY(-${door.clientHeight * (pool.length)}px)`;
+        
+        // copy the first box and put it on the end as the last box
+        //const shownBoxClone = boxesClone.firstChild.cloneNode(true);
+        
+        console.log('the first element box is ');
+        console.log(boxes);
+        
+        console.log('the firstChild node is');
+        console.log(boxes.firstChild);
+        
+        
+        var winningBox = boxes.querySelector('.box');
+        console.log('the first box i could find was');
+        console.log(winningBox);
+        
+        // put the previous winner back on the bottom 
+        boxesClone.appendChild(winningBox);
+        
+        // delete the original winning box from the top of the stack
+        var allBoxes = boxesClone.querySelectorAll('.box');
+        boxesClone.removeChild(allBoxes[0]);
+        
+        // move the parent back to the top
+        console.log('move the new boxes back to the top to only show the previous winner');
+        console.log(door.clientHeight * pool.length);
+        boxesClone.style.transform = `translateY(-${door.clientHeight * (pool.length)}px)`;
+        
+        //boxesClone.appendChild(shownBoxClone);
+      }
+      
+      // replace the orignal parent with my new one with baby boxes
+      door.replaceChild(boxesClone, boxes);
+      
+    } // end of the loop for each door
+  
+  if(firstTime){
+    var autospin = setTimeout(function(){
+      spin();
+    }, 500);
+  }
+}
+
+
+function spin(){
+  
+
+  console.log('spin!');
+  
+  // disable the 'Play' button
+  
+  /* is this not working?  */
+  
+  var playButton = document.getElementById("spinner");
+  playButton.removeEventListener('click', spin);
+  playButton.disabled = true;
+  playButton.classList.add('disabled');
+  playButton.classList.remove('enabled');
+  
+  var doors = document.querySelectorAll('.door');
+  
+  // for each door/reel
+  for (var z = 0; z < doors.length; z++) {
+   
+    var door = doors[z];
+    
+    // we move the parent container
+    var boxes = door.querySelector('.boxes');
+    
+    // by whatever value we set in the init ('2' seconds)
+    
+    // boxes.style.transitionDuration += (z * 100); // does this do anything?
+    var duration = parseInt(boxes.style.transitionDuration);
+    
+    // go all at once 
+    boxes.style.transform = 'translateY(0)'; // move all the boxes down to 0 y position
+    
+  }
+  
+  var over = setTimeout(reset, 4000 );
+}
+
+
+function reset(){
+  
+  console.log('SPINNING IS OVER??!?');
+
+  init(false);
+  
+  // enable button again
+  var playButton = document.getElementById("spinner");
+  playButton.disabled = false;
+  playButton.classList.remove('disabled');
+  playButton.classList.add('enabled');
+  playButton.addEventListener('click', spin);
+}
+
+function shuffleNew(theArray){
+  for (var a = 0; a < theArray.length; a++) {
+    var x = theArray[a];
+    var y = Math.floor(Math.random() * (a + 1));
+    theArray[a] = theArray[y];
+    theArray[y] = x;
+  }
+  return theArray;
+}
+
+function waiting(){
+ console.log( 'wait a while');
+  var wait = setTimeout(function(){
+    init(true)
+  }, 5000)
+}
+
+// start
+// document.addEventListener("load", init(true));
+document.addEventListener("load", waiting());
+
+// observe window resize
+window.addEventListener('resize', resizeHandler);
+
+// calculate size
+function resizeHandler() {
+
+
+}
+
+</script>
+
+
+
+
+
+</body>
+</html>
+
